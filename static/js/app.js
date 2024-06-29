@@ -1,3 +1,10 @@
+import { pTag, schedLabels } from "./components.js";
+import { formatDate } from "./utils.js";
+import readFile from "./reader.js";
+import { parseTables } from "./parser.js";
+import { getProjects } from "./project.js";
+import XerError from "./error.js";
+
 const dropArea = document.getElementById("drop-area");
 const sched = document.getElementById("sched");
 
@@ -29,125 +36,25 @@ function preventDefaults(e) {
 
 dropArea.addEventListener("drop", handleDrop, false);
 
-function handleDrop(e) {
+async function handleDrop(e) {
   const dt = e.dataTransfer;
   const files = dt.files;
-  readFile(files[0]);
-}
+  try {
+    const data = await readFile(files[0]);
+    const tables = parseTables(data);
+    const projects = getProjects(tables);
 
-function readFile(file) {
-  if (!file.name.endsWith(".xer")) return null;
-
-  let reader = new FileReader();
-  reader.onload = (r) => {
-    let projects = processProj(parseTables(r.target.result));
-
-    let colsDiv = document.createElement("div");
-    colsDiv.id = "col-header";
-    colsDiv.style.display = "grid";
-    colsDiv.style.gridTemplateColumns = `240px minmax(300px, 800px) 60px 60px 120px 120px 60px`;
-    const idCol = document.createElement("p");
-    idCol.textContent = "Activity ID";
-    idCol.style.paddingLeft = `10px`;
-    const nameCol = document.createElement("p");
-    nameCol.textContent = "Activity Name";
-    const odCol = document.createElement("p");
-    odCol.textContent = "Orig Dur";
-    const rdCol = document.createElement("p");
-    rdCol.textContent = "Rem Dur";
-    const startCol = document.createElement("p");
-    startCol.textContent = "Start";
-    const finishCol = document.createElement("p");
-    finishCol.textContent = "Finish";
-    const tfCol = document.createElement("p");
-    tfCol.textContent = "Total Float";
-    colsDiv.appendChild(idCol);
-    colsDiv.appendChild(nameCol);
-    colsDiv.appendChild(odCol);
-    colsDiv.appendChild(rdCol);
-    colsDiv.appendChild(startCol);
-    colsDiv.appendChild(finishCol);
-    colsDiv.appendChild(tfCol);
-
-    colsDiv.style.border = "1px solid #999";
-    sched.appendChild(colsDiv);
-
-    for (proj of projects) {
+    sched.appendChild(schedLabels());
+    for (let proj of projects) {
       createNode(proj.wbs, 0, sched, proj.tasks);
     }
-  };
-  reader.readAsText(file, "cp1252");
-}
-
-function parseTables(data) {
-  let tables = {};
-  const tableData = data.split("%T\t").slice(1);
-  for (let table of tableData) {
-    let lines = table.split("\r\n");
-    const name = lines.shift().trim();
-    const labels = lines.shift().split("\t").slice(1);
-    const rows = lines
-      .filter((r) => r.startsWith("%R"))
-      .map((r) => r.split("\t").slice(1));
-    tables[name] = rows.map((row) => convertToObj(labels, row));
-  }
-  return tables;
-}
-
-function processProj(data) {
-  let validProjs = data.PROJECT.filter((p) => p.export_flag == "Y");
-  for (proj of validProjs) {
-    proj.wbs = processWBS(data.PROJWBS, proj.proj_id);
-    proj.tasks = processTask(data.TASK, proj.proj_id);
-  }
-  return validProjs;
-}
-
-function processWBS(wbsData, proj_id) {
-  let projWbs = wbsData.filter((n) => n.proj_id == proj_id);
-  let projNode = getProjNode(projWbs, proj_id);
-  let wbs = processNode(projNode, projWbs);
-
-  return wbs;
-}
-
-function processNode(node, wbsData) {
-  node.children = [];
-  node.tasks = [];
-  for (wbs of wbsData) {
-    if (wbs.parent_wbs_id == node.wbs_id) {
-      node.children.push(wbs);
-      processNode(wbs, wbsData);
+  } catch (err) {
+    if (err instanceof XerError) {
+      alert(err.message);
+    } else {
+      console.error(err);
     }
   }
-  return node;
-}
-
-function getProjNode(wbsData, proj_id) {
-  for (node of wbsData) {
-    if (node.proj_node_flag == "Y" && node.proj_id == proj_id) {
-      return node;
-    }
-    return null;
-  }
-}
-
-function processTask(taskData, proj_id) {
-  let tasks = {};
-  for (let task of taskData.filter((t) => t.proj_id == proj_id)) {
-    if (!(task.wbs_id in tasks)) {
-      tasks[task.wbs_id] = [];
-    }
-    tasks[task.wbs_id].push(task);
-  }
-  return tasks;
-}
-
-function convertToObj(a, b) {
-  let object = a.reduce((acc, element, index) => {
-    return { ...acc, [element]: b[index] };
-  }, {});
-  return object;
 }
 
 function createNode(node, level, parent, tasks) {
@@ -206,7 +113,7 @@ function createNode(node, level, parent, tasks) {
     childDiv.appendChild(taskDiv);
   }
 
-  for (child of node.children) {
+  for (let child of node.children) {
     createNode(child, level + 1, childDiv, tasks);
   }
   div.appendChild(childDiv);
@@ -243,23 +150,4 @@ function getTaskFinish(task) {
     return `${formatDate(task.act_end_date)} A`;
   }
   return formatDate(task.early_end_date);
-}
-
-function formatDate(date) {
-  const parts = date.split(/[- :]/); // Split by hyphens, spaces, and colons
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  return `${parts[2]}-${months[parseInt(parts[1]) - 1]}-${parts[0].slice(-2)}`;
 }

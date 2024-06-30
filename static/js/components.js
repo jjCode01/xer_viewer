@@ -49,12 +49,12 @@ export const taskTable = (tasks, level) => {
   for (let task of tasks) {
     const idColWidth = 230 - level * 10;
     const row = taskRow(idColWidth, task.task_id);
-    const padding = `${70 - level * 10}px`;
-    row.appendChild(
-      pTag(task.task_code, {
-        paddingLeft: padding,
-      })
-    );
+
+    const taskCode = pTag(task.task_code, {
+      paddingLeft: `${70 - level * 10}px`,
+    });
+
+    row.appendChild(taskCode);
     row.appendChild(pTag(task.task_name));
     row.appendChild(pTag(parseInt(task.target_drtn_hr_cnt / 8)));
     row.appendChild(pTag(parseInt(task.remain_drtn_hr_cnt / 8)));

@@ -1,5 +1,4 @@
-import { pTag, schedLabels } from "./components.js";
-import { formatDate } from "./utils.js";
+import { schedLabels, taskTable } from "./components.js";
 import readFile from "./reader.js";
 import { parseTables } from "./parser.js";
 import { getProjects } from "./project.js";
@@ -73,44 +72,7 @@ function createNode(node, level, parent, tasks) {
   const childDiv = document.createElement("div");
 
   if (node.wbs_id in tasks) {
-    const taskDiv = document.createElement("div");
-    taskDiv.classList.add("tasks");
-    for (let task of tasks[node.wbs_id]) {
-      const row = document.createElement("div");
-      row.classList.add("row");
-      row.style.display = "grid";
-      row.style.gridTemplateColumns = `${
-        230 - level * 10
-      }px minmax(300px, 800px) 60px 60px 120px 120px 60px`;
-      row.id = task.task_id;
-      const taskID = document.createElement("p");
-      taskID.textContent = task.task_code;
-      taskID.style.paddingLeft = `${70 - level * 10}px`;
-      const taskName = document.createElement("p");
-      taskName.textContent = task.task_name;
-      const origDur = document.createElement("p");
-      origDur.textContent = parseInt(parseInt(task.target_drtn_hr_cnt) / 8);
-      const remDur = document.createElement("p");
-      const remHrs = parseInt(task.remain_drtn_hr_cnt);
-      remDur.textContent = remHrs == 0 ? 0 : parseInt(remHrs / 8);
-      const startDate = document.createElement("p");
-      startDate.textContent = getTaskStart(task);
-      const finishDate = document.createElement("p");
-      finishDate.textContent = getTaskFinish(task);
-      const totalFloat = document.createElement("p");
-      const tfHrs = task.total_float_hr_cnt;
-      totalFloat.textContent = tfHrs == "" ? "" : parseInt(parseInt(tfHrs) / 8);
-      row.appendChild(taskID);
-      row.appendChild(taskName);
-      row.appendChild(origDur);
-      row.appendChild(remDur);
-      row.appendChild(startDate);
-      row.appendChild(finishDate);
-      row.appendChild(totalFloat);
-
-      taskDiv.appendChild(row);
-    }
-    childDiv.appendChild(taskDiv);
+    childDiv.appendChild(taskTable(tasks[node.wbs_id], level));
   }
 
   for (let child of node.children) {
@@ -128,26 +90,4 @@ function createNode(node, level, parent, tasks) {
       this.classList.toggle("ctr");
     }
   });
-}
-
-function getTaskStart(task) {
-  if (task.task_type == "TT_FinMile") {
-    return "";
-  }
-
-  if (task.status_code == "TK_NotStart") {
-    return formatDate(task.early_start_date);
-  }
-  return `${formatDate(task.act_start_date)} A`;
-}
-
-function getTaskFinish(task) {
-  if (task.task_type == "TT_Mile") {
-    return "";
-  }
-
-  if (task.status_code == "TK_Complete") {
-    return `${formatDate(task.act_end_date)} A`;
-  }
-  return formatDate(task.early_end_date);
 }

@@ -13,9 +13,18 @@ export function parseTables(data) {
   return tables;
 }
 
-function convertToObj(a, b) {
-  let object = a.reduce((acc, element, index) => {
-    return { ...acc, [element]: b[index] };
+function convertToObj(labels, arr) {
+  let object = labels.reduce((acc, element, i) => {
+    return { ...acc, [element]: setDataType(element, arr[i]) };
   }, {});
   return object;
 }
+
+const setDataType = (col, val) => {
+  if (val === "") return val;
+  if (!val || !col) return;
+  if (/.+_date2*/.test(col)) return new Date(val.replace(" ", "T"));
+  if (col.endsWith("_num")) return parseInt(val);
+  if (/.+_(cost|qty|cnt)/.test(col)) return parseFloat(val);
+  return val;
+};

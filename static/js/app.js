@@ -47,6 +47,7 @@ async function handleDrop(e) {
     for (let proj of projects) {
       createNode(proj.wbs, 0, sched, proj.tasks);
     }
+    dropArea.style.display = "none";
   } catch (err) {
     if (err instanceof XerError) {
       alert(err.message);

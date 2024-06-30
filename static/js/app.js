@@ -5,6 +5,7 @@ import { getProjects } from "./project.js";
 import XerError from "./error.js";
 
 const dropArea = document.getElementById("drop-area");
+const fileInput = document.getElementById("file-input");
 const sched = document.getElementById("sched");
 
 ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
@@ -33,11 +34,25 @@ function preventDefaults(e) {
   );
 });
 
-dropArea.addEventListener("drop", handleDrop, false);
+dropArea.addEventListener("drop", (event) => {
+  const files = event.dataTransfer.files;
+  handleDrop(files);
+});
 
-async function handleDrop(e) {
-  const dt = e.dataTransfer;
-  const files = dt.files;
+dropArea.addEventListener("click", (event) => {
+  if (!event.dataTransfer) {
+    // Check if there was no drag event
+    fileInput.click();
+  }
+});
+
+// Handle file selection from the hidden file input
+fileInput.addEventListener("change", (event) => {
+  const files = event.target.files;
+  handleDrop(files);
+});
+
+async function handleDrop(files) {
   try {
     const data = await readFile(files[0]);
     const tables = parseTables(data);

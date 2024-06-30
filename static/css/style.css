@@ -1,27 +1,10 @@
 :root {
   --border-color: #999;
-  --dur-width: 60px;
-  --date-width: 120px;
-}
-
-h3 {
-  text-align: center;
-}
-
-.flex {
-  display: flex;
-  justify-content: space-between;
-  width: 220px;
-  padding: 3px 10px;
-}
-
-.flex p {
-  margin: 0;
-  padding: 0;
 }
 
 #sched {
   max-width: 1460px;
+  min-width: 965px;
   margin: 0 auto;
 }
 
@@ -47,15 +30,6 @@ h3 {
   position: sticky;
   top: 0;
   background-color: #cccccc;
-}
-
-#file-name {
-  margin: 5px auto;
-}
-
-#table-list {
-  margin: 5px auto;
-  width: fit-content;
 }
 
 html,
@@ -84,7 +58,7 @@ p.exp {
   background-color: white;
   color: black;
   border-left: 0.5px solid var(--border-color);
-  font-size: 1rem;
+  font-size: .95rem;
 }
 .l0 {
   background-color: black;

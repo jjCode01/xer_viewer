@@ -73,6 +73,10 @@ async function handleDrop(files) {
 }
 
 function createNode(node, level, parent, tasks) {
+  if (!node.children && !(node.wbs_id in tasks)) {
+    return;
+  }
+
   const div = document.createElement("div");
   div.classList.add("node");
   div.classList.add(`l${level}`);
@@ -81,9 +85,6 @@ function createNode(node, level, parent, tasks) {
   name.textContent = node.wbs_name;
   div.appendChild(name);
 
-  if (!node.children && !(node.wbs_id in tasks)) {
-    return;
-  }
   name.classList.add("ctr");
   const childDiv = document.createElement("div");
 
@@ -91,7 +92,7 @@ function createNode(node, level, parent, tasks) {
     childDiv.appendChild(taskTable(tasks[node.wbs_id], level));
   }
 
-  for (let child of node.children) {
+  for (let child of node.children.sort((a, b) => a.seq_num - b.seq_num)) {
     createNode(child, level + 1, childDiv, tasks);
   }
   div.appendChild(childDiv);

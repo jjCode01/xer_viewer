@@ -46,7 +46,14 @@ export const schedLabels = () => {
 export const taskTable = (tasks, level) => {
   const div = document.createElement("div");
   div.classList.add("tasks");
-  for (let task of tasks) {
+  const sortedTasks = tasks.sort((a, b) => {
+    if (taskStart(a) !== taskStart(b)) {
+      return taskStart(a) - taskStart(b);
+    } else {
+      return taskFinish(a) - taskFinish(b);
+    }
+  });
+  for (let task of sortedTasks) {
     const idColWidth = 230 - level * 10;
     const row = taskRow(idColWidth, task.task_id);
 
@@ -64,6 +71,20 @@ export const taskTable = (tasks, level) => {
     div.appendChild(row);
   }
   return div;
+};
+
+const taskStart = (task) => {
+  if (task.status_code == "TK_NotStart") {
+    return task.early_start_date;
+  }
+  return task.act_start_date;
+};
+
+const taskFinish = (task) => {
+  if (task.status_code == "TK_Complete") {
+    return task.act_end_date;
+  }
+  return task.early_end_date;
 };
 
 const taskRow = (col1Width, id) => {

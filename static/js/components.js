@@ -89,8 +89,7 @@ const taskFinish = (task) => {
 
 const taskRow = (col1Width, id) => {
   const row = document.createElement("div");
-  row.classList.add("row");
-  row.style.display = "grid";
+  row.classList.add("task");
   row.style.gridTemplateColumns = [
     `${col1Width}px`,
     ...DEFAULTWIDTHS.slice(1),

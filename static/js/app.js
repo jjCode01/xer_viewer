@@ -7,8 +7,9 @@ import XerError from "./error.js";
 const dropArea = document.getElementById("drop-area");
 const fileInput = document.getElementById("file-input");
 const sched = document.getElementById("sched");
+const searchInput = document.getElementById("search-input");
 
-["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+[("dragenter", "dragover", "dragleave", "drop")].forEach((eventName) => {
   dropArea.addEventListener(eventName, preventDefaults, false);
   document.body.addEventListener(eventName, preventDefaults, false);
 });
@@ -52,6 +53,30 @@ fileInput.addEventListener("change", (event) => {
   handleDrop(files);
 });
 
+searchInput.addEventListener("input", () => {
+  const taskItems = document.querySelectorAll(".task");
+
+  const searchTerm = searchInput.value.toLowerCase();
+
+  taskItems.forEach((item) => {
+    let foundFlag = false;
+    for (let col of [...item.children]) {
+      // [...item.children].forEach((col) => {
+      const itemText = col.textContent.toLowerCase();
+      if (itemText.includes(searchTerm)) {
+        foundFlag = true;
+        break;
+      }
+    }
+
+    if (foundFlag) {
+      item.classList.remove("hidden");
+    } else {
+      item.classList.add("hidden");
+    }
+  });
+});
+
 async function handleDrop(files) {
   try {
     const data = await readFile(files[0]);
@@ -63,6 +88,7 @@ async function handleDrop(files) {
       createNode(proj.wbs, 0, sched, proj.tasks);
     }
     dropArea.style.display = "none";
+    searchInput.style.display = "inherit";
   } catch (err) {
     if (err instanceof XerError) {
       alert(err.message);

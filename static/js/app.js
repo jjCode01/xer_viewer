@@ -73,7 +73,7 @@ async function handleDrop(files) {
 }
 
 function createNode(node, level, parent, tasks) {
-  if (!node.children && !(node.wbs_id in tasks)) {
+  if (node.children.length === 0 && !(node.wbs_id in tasks)) {
     return;
   }
 

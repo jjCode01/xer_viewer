@@ -8,9 +8,9 @@ export function getProjects(data) {
 }
 
 function processWBS(wbsData, proj_id) {
-  let projWbs = wbsData.filter((n) => n.proj_id == proj_id);
-  let projNode = getProjNode(projWbs, proj_id);
-  let wbs = processNode(projNode, projWbs);
+  let wbsNodes = wbsData.filter((n) => n.proj_id == proj_id);
+  let projNode = getProjNode(wbsNodes, proj_id);
+  let wbs = processNode(projNode, wbsNodes);
 
   return wbs;
 }

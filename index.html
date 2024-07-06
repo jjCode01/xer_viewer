@@ -6,30 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title id="title">XER File</title>
     <link rel="stylesheet" type="text/css" href="./static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="./static/css/dialog.css" />
   </head>
   <body>
-    <header>
-      <h1><a href="#" onclick="location.reload();">XER Viewer</a></h1>
+    <div id="container">
+      <header>
+        <h1><a href="#" onclick="location.reload();">XER Viewer</a></h1>
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search..."
+          style="display: none"
+        />
+      </header>
+
+      <div id="drop-area">
+        Drop files here <br />
+        or click to browse
+      </div>
       <input
-        type="text"
-        id="search-input"
-        placeholder="Search..."
+        type="file"
+        id="file-input"
         style="display: none"
+        accept=".xer"
+        multiple
       />
-    </header>
-    <div id="drop-area">
-      Drop files here <br />
-      or click to browse
+      <!-- <div id="stats"></div> -->
+      <div id="sched"></div>
+      <dialog id="taskDialog">
+        <div style="display: flex">
+            <h4 id="task-code"></h3>
+            <!-- <h4 id="task-name"></h3> -->
+        </div>
+        <div class="dialog-container">
+          
+          <div class="tabs">
+            <button class="tab active" data-tab="tab1">General</button>
+            <button class="tab" data-tab="tab2">Status</button>
+            <button class="tab" data-tab="tab3">Resources</button>
+            <button class="tab" data-tab="tab4">Predecessors</button>
+            <button class="tab" data-tab="tab5">Successors</button>
+            <button class="tab" data-tab="tab6">Codes</button>
+            <button class="tab" data-tab="tab7">Notebook</button>
+          </div>
+          <div class="tab-content">
+            <div id="tab1" class="tab-pane active">
+              <div class="table-grid">
+                <p>Activity Type:</p>
+                <p id="activity-type"></p>
+                <p>Duration Type:</p><p id="duration-type"></p>
+                <p>% Complete Type:</p><p id="percent-type"></p>
+                <p>Calendar:</p><p id="calendar"></p>
+              </div>
+            </div>
+            <div id="tab2" class="tab-pane">
+              <fieldset class="table-grid">
+                <legend>Duration:</legend>
+                <p>Original:</p><p id="original-dur"></p>
+                <p>Actual:</p><p id="actual-dur"></p>
+                <p>Remaining:</p><p id="remain-dur"></p>
+                <p>At Complete:</p><p id="at-complete-dur"></p>
+              </fieldset>
+            </div>
+            <div id="tab3" class="tab-pane">Coming Soon</div>
+            <div id="tab4" class="tab-pane">Coming Soon</div>
+            <div id="tab5" class="tab-pane">Coming Soon</div>
+            <div id="tab6" class="tab-pane">Coming Soon</div>
+            <div id="tab7" class="tab-pane">Coming Soon</div>
+            
+          </div>
+          <button id="closeDialog">Close</button>
+        </div>
+      </dialog>
     </div>
-    <input
-      type="file"
-      id="file-input"
-      style="display: none"
-      accept=".xer"
-      multiple
-    />
-    <!-- <div id="stats"></div> -->
-    <div id="sched"></div>
     <script type="module" src="./static/js/app.js"></script>
   </body>
 </html>

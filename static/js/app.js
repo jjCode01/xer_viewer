@@ -2,11 +2,32 @@ import { schedLabels, taskTable } from "./components.js";
 import readFile from "./reader.js";
 import { parseTables } from "./parser.js";
 import XerError from "./error.js";
+import { updateTaskDialog } from "./components/taskDialog.js";
 
 const dropArea = document.getElementById("drop-area");
 const fileInput = document.getElementById("file-input");
 const sched = document.getElementById("sched");
 const searchInput = document.getElementById("search-input");
+const taskDialog = document.getElementById("taskDialog");
+const closeButton = document.getElementById("closeDialog");
+const tabs = document.querySelectorAll(".tab");
+const tabPanes = document.querySelectorAll(".tab-pane");
+
+closeButton.addEventListener("click", () => {
+  taskDialog.close();
+});
+
+tabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    // Deactivate all tabs and panes
+    tabs.forEach((t) => t.classList.remove("active"));
+    tabPanes.forEach((p) => p.classList.remove("active"));
+
+    // Activate the clicked tab and its corresponding pane
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
 
 let xer = undefined;
 
@@ -108,6 +129,20 @@ function showSchedule() {
   }
   dropArea.style.display = "none";
   searchInput.style.display = "initial";
+
+  const tasks = document.querySelectorAll(".task");
+  tasks.forEach((task) => {
+    task.addEventListener("click", () => {
+      tasks.forEach((t) => t.classList.remove("selected"));
+      task.classList.add("selected");
+    });
+    task.addEventListener("dblclick", () => {
+      tasks.forEach((t) => t.classList.remove("selected"));
+      task.classList.add("selected");
+      updateTaskDialog(xer.TASK[task.id]);
+      taskDialog.showModal();
+    });
+  });
 }
 
 function createNode(node, level, parent) {

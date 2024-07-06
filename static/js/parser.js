@@ -31,7 +31,6 @@ export function parseTables(data) {
   for (const task of Object.values(tables.TASK)) {
     tables.PROJWBS[task.wbs_id].tasks.push(task);
   }
-  console.log(tables);
   return tables;
 }
 

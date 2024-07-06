@@ -2,6 +2,11 @@
   --border-color: #999;
   --max-width: 1460px;
 }
+#container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure container is at least viewport height */
+}
 
 #sched {
   max-width: var(--max-width);
@@ -66,6 +71,7 @@ header h1 {
   margin: 0;
   padding: 0;
 }
+
 #search-input {
   width: 300px;
 }
@@ -77,16 +83,15 @@ div {
   min-height: 20px;
   min-width: 200px;
 }
-p {
+.node p,
+.task p,
+#col-header p {
   margin: 0;
   padding: 3px 5px;
   border-bottom: 0.5px solid var(--border-color);
   border-right: 0.5px solid var(--border-color);
 }
 
-p.exp {
-  border-bottom: 0;
-}
 .node {
   padding-left: 10px;
   border-left: 0.5px solid var(--border-color);
@@ -140,6 +145,9 @@ p.exp {
 p.exp {
   border-bottom: 1px solid var(--border-color);
 }
+/* p.exp {
+  border-bottom: 0;
+} */
 
 .exp::before {
   content: "\002B";
@@ -157,6 +165,8 @@ p.exp {
 .task {
   display: grid;
 }
-.task.hidden {
-  display: none;
+
+.task.selected {
+  background-color: rgb(207, 255, 255);
 }
+

@@ -35,7 +35,10 @@ dialog {
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 1rem;
+}
 
+.tab:focus {
+  outline: 0;
 }
 
 .tab-content {

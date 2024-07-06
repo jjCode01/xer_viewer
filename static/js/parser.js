@@ -1,3 +1,7 @@
+import Task from "./schema/task.js";
+import WbsNode from "./schema/wbs.js";
+import Project from "./schema/project.js";
+
 const tableIdMap = {
   PROJECT: "proj_id",
   PROJWBS: "wbs_id",
@@ -17,18 +21,21 @@ export function parseTables(data) {
     const rows = lines
       .filter((r) => r.startsWith("%R"))
       .map((r) => zipArraysToObj(labels, r.split("\t").slice(1)));
-    tables[name] = toObject(rows, name);
+    tables[name] = convertArrToObj(rows, name);
   }
 
   for (const node of Object.values(tables.PROJWBS)) {
-    if (node.proj_node_flag === "Y") {
+    if (node.isProjectNode) {
       tables.PROJECT[node.proj_id].wbs = node;
       continue;
     }
-    tables.PROJWBS[node.parent_wbs_id].children.push(node);
+    const parentNode = tables.PROJWBS[node.parent_wbs_id];
+    parentNode.children.push(node);
+    node.parent = parentNode;
   }
 
   for (const task of Object.values(tables.TASK)) {
+    tables.PROJECT[task.proj_id].tasks.push(task);
     tables.PROJWBS[task.wbs_id].tasks.push(task);
   }
   return tables;
@@ -41,18 +48,19 @@ function zipArraysToObj(labels, arr) {
   return object;
 }
 
-const toObject = (arr, tableName) => {
+const convertArrToObj = (arr, tableName) => {
   const key = tableIdMap[tableName];
   if (!key) return;
   let entries = arr.reduce((obj, el) => {
     if (tableName === "PROJWBS") {
-      el.children = [];
-      el.tasks = [];
+      obj[el[key]] = new WbsNode(el);
+    } else if (tableName === "TASK") {
+      obj[el[key]] = new Task(el);
+    } else if (tableName === "PROJECT") {
+      obj[el[key]] = new Project(el);
+    } else {
+      obj[el[key]] = el;
     }
-    if (tableName === "TASK") {
-      el.search = getSearch(el);
-    }
-    obj[el[key]] = el;
     return obj;
   }, {});
   return entries;
@@ -65,13 +73,4 @@ const setDataType = (col, val) => {
   if (col.endsWith("_num")) return parseInt(val);
   if (/.+_(cost|qty|cnt)/.test(col)) return parseFloat(val);
   return val;
-};
-
-const getSearch = (task) => {
-  const searchAttrs = [
-    task.task_code,
-    task.task_name,
-    task.driving_path_flag === "Y" ? "Critical" : "",
-  ];
-  return searchAttrs.join(" ");
 };

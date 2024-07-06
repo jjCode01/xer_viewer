@@ -146,7 +146,7 @@ function showSchedule() {
 }
 
 function createNode(node, level, parent) {
-  if (isEmptyNode(node)) {
+  if (node.length === 0) {
     return;
   }
 

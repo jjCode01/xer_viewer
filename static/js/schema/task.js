@@ -41,17 +41,21 @@ export default class Task {
     this.isMilestone = this.task_type.endsWith("Mile");
     this.isLOE = this.task_type === "TT_LOE";
     this.status = STATUSTYPES[this.status_code];
-    this.origDur = this.target_drtn_hr_cnt / 8;
-    this.remDur = this.remain_drtn_hr_cnt / 8;
-    this.totalFloat = this.completed ? NaN : this.total_float_hr_cnt / 8;
-    this.freeFloat = this.completed ? NaN : this.free_float_hr_cnt / 8;
+    this.origDur = parseInt(this.target_drtn_hr_cnt / 8);
+    this.remDur = parseInt(this.remain_drtn_hr_cnt / 8);
+    this.totalFloat = this.completed
+      ? NaN
+      : parseInt(this.total_float_hr_cnt / 8);
+    this.freeFloat = this.completed
+      ? NaN
+      : parseInt(this.free_float_hr_cnt / 8);
     this.resources = [];
     this.predecessors = [];
     this.successors = [];
     // this.wbsMap = [];
     this.memos = {};
-    this.start = this.act_start_date ?? this.early_start_date;
-    this.finish = this.act_end_date ?? this.early_end_date;
+    this.start = this.notStarted ? this.early_start_date : this.act_start_date;
+    this.finish = this.completed ? this.act_end_date : this.early_end_date;
     this.percentType = PERCENTTYPES[this.complete_pct_type];
     this.thisType = TASKTYPES[this.task_type];
     this.primeConstraint = CONSTRAINTTYPES[this.cstr_type];

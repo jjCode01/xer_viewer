@@ -1,4 +1,4 @@
-import { getTaskFinish, getTaskStart, getTotalFloat } from "./task.js";
+import { formatDate, formatNumber } from "./utils.js";
 
 const DEFAULTWIDTHS = [
   "240px",
@@ -47,10 +47,10 @@ export const taskTable = (tasks, level) => {
   const div = document.createElement("div");
   div.classList.add("tasks");
   const sortedTasks = tasks.sort((a, b) => {
-    if (taskStart(a) !== taskStart(b)) {
-      return taskStart(a) - taskStart(b);
+    if (a.start !== b.start) {
+      return a.start - b.start;
     } else {
-      return taskFinish(a) - taskFinish(b);
+      return a.finish - b.finish;
     }
   });
   for (let task of sortedTasks) {
@@ -63,28 +63,24 @@ export const taskTable = (tasks, level) => {
 
     row.appendChild(taskCode);
     row.appendChild(pTag(task.task_name));
-    row.appendChild(pTag(parseInt(task.target_drtn_hr_cnt / 8)));
-    row.appendChild(pTag(parseInt(task.remain_drtn_hr_cnt / 8)));
-    row.appendChild(pTag(getTaskStart(task)));
-    row.appendChild(pTag(getTaskFinish(task)));
-    row.appendChild(pTag(getTotalFloat(task)));
+    row.appendChild(pTag(formatNumber(task.origDur)));
+    row.appendChild(pTag(formatNumber(task.remDur)));
+    row.appendChild(pTag(taskStart(task)));
+    row.appendChild(pTag(taskFinish(task)));
+    row.appendChild(pTag(isNaN(task.totalFloat) ? "" : task.totalFloat));
     div.appendChild(row);
   }
   return div;
 };
 
 const taskStart = (task) => {
-  if (task.status_code == "TK_NotStart") {
-    return task.early_start_date;
-  }
-  return task.act_start_date;
+  if (task.task_type == "TT_Mile") return "";
+  return `${formatDate(task.start)}${task.notStarted ? "" : " A"}`;
 };
 
 const taskFinish = (task) => {
-  if (task.status_code == "TK_Complete") {
-    return task.act_end_date;
-  }
-  return task.early_end_date;
+  if (task.task_type == "TT_FinMile") return "";
+  return `${formatDate(task.finish)}${task.completed ? " A" : ""}`;
 };
 
 const taskRow = (col1Width, id) => {

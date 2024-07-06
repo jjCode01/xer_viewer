@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Ensure container is at least viewport height */
+  margin-bottom: 10px;
 }
 
 #sched {
@@ -83,7 +84,7 @@ div {
   min-height: 20px;
   min-width: 200px;
 }
-.node p,
+
 .task p,
 #col-header p {
   margin: 0;
@@ -138,8 +139,11 @@ div {
 
 .exp,
 .ctr {
-  padding-left: 1.35rem;
+  padding: 3px 5px 3px 1.35rem;
   position: relative;
+  margin: 0;
+  border-bottom: 0.5px solid var(--border-color);
+  border-right: 0.5px solid var(--border-color);
 }
 
 p.exp {

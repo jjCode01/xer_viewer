@@ -1,11 +1,13 @@
 import Task from "./schema/task.js";
 import WbsNode from "./schema/wbs.js";
 import Project from "./schema/project.js";
+import { TaskRsrc } from "./schema/rsrc.js";
 
 const tableIdMap = {
   PROJECT: "proj_id",
   PROJWBS: "wbs_id",
   TASK: "task_id",
+  TASKRSRC: "taskrsrc_id",
 };
 
 export function parseTables(data) {
@@ -38,6 +40,10 @@ export function parseTables(data) {
     tables.PROJECT[task.proj_id].tasks.push(task);
     tables.PROJWBS[task.wbs_id].tasks.push(task);
   }
+
+  for (const rsrc of Object.values(tables.TASKRSRC)) {
+    tables.TASK[rsrc.task_id].resources.push(rsrc);
+  }
   return tables;
 }
 
@@ -58,6 +64,8 @@ const convertArrToObj = (arr, tableName) => {
       obj[el[key]] = new Task(el);
     } else if (tableName === "PROJECT") {
       obj[el[key]] = new Project(el);
+    } else if (tableName === "TASKRSRC") {
+      obj[el[key]] = new TaskRsrc(el);
     } else {
       obj[el[key]] = el;
     }

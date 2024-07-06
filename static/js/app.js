@@ -12,6 +12,7 @@ const taskDialog = document.getElementById("taskDialog");
 const closeButton = document.getElementById("closeDialog");
 const tabs = document.querySelectorAll(".tab");
 const tabPanes = document.querySelectorAll(".tab-pane");
+let xer = undefined;
 
 closeButton.addEventListener("click", () => {
   taskDialog.close();
@@ -28,8 +29,6 @@ tabs.forEach((tab) => {
     document.getElementById(tab.dataset.tab).classList.add("active");
   });
 });
-
-let xer = undefined;
 
 [("dragenter", "dragover", "dragleave", "drop")].forEach((eventName) => {
   dropArea.addEventListener(eventName, preventDefaults, false);
@@ -82,15 +81,6 @@ searchInput.addEventListener("input", () => {
 
   filterTasks(searchTerm);
 });
-
-function isEmptyNode(node) {
-  if (node.tasks.length > 0) return false;
-
-  for (const child of node.children) {
-    if (!isEmptyNode(child)) return false;
-  }
-  return true;
-}
 
 function filterTasks(search) {
   const filteredTasks = Object.values(xer.TASK).filter((t) =>

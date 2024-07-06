@@ -1,4 +1,4 @@
-import { formatDate, formatNumber } from "./utils.js";
+import { formatCost, formatDate, formatNumber } from "./utils.js";
 
 const DEFAULTWIDTHS = [
   "240px",
@@ -8,6 +8,7 @@ const DEFAULTWIDTHS = [
   "120px",
   "120px",
   "60px",
+  "150px",
 ];
 
 const DEFAULTLABELS = [
@@ -18,6 +19,7 @@ const DEFAULTLABELS = [
   "Start",
   "Finish",
   "Total Float",
+  "Budgeted Cost",
 ];
 
 export const pTag = (text, fmt = {}) => {
@@ -68,6 +70,7 @@ export const taskTable = (tasks, level) => {
     row.appendChild(pTag(taskStart(task)));
     row.appendChild(pTag(taskFinish(task)));
     row.appendChild(pTag(isNaN(task.totalFloat) ? "" : task.totalFloat));
+    row.appendChild(pTag(formatCost(task.budgetCost), { textAlign: "right" }));
     div.appendChild(row);
   }
   return div;

@@ -1,7 +1,16 @@
+:root {
+  --border-color: #999;
+  --bg-color: #ddd;
+}
+
 dialog {
   padding: 0;
   min-width: 360px;
   min-height: 500px;
+  background-color: var(--bg-color);
+  border: 0;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 3px var(--border-color);
 }
 
 #task-code {
@@ -28,13 +37,14 @@ dialog {
   padding: 10px;
   cursor: pointer;
   background-color: white;
-  border-left: 1px solid #ccc;
-  border-top: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  /* border-top: 1px solid #ccc;
   border-right: 1px solid #ccc;
-  border-bottom: 0;
+  border-bottom: 0; */
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 1rem;
+  width: 100%;
 }
 
 .tab:focus {
@@ -42,12 +52,16 @@ dialog {
 }
 
 .tab-content {
-  border: 1px solid #ccc;
+  border-left: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
   margin-bottom: 10px;
 }
 
 .tab.active {
-  background-color: lightblue; /* Highlight active tab */
+  background-color: var(--bg-color); /* Highlight active tab */
+  border-bottom: 0;
+  /* color: #eee; */
 }
 
 /* Tab content styling */
@@ -67,6 +81,12 @@ dialog {
 
 .table-grid p {
     margin: 5px 10px 5px 5px;
+}
+
+.value {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px
 }
 
 

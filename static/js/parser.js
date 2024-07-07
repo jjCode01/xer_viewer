@@ -36,12 +36,12 @@ export function parseTables(data) {
     node.parent = parentNode;
   }
 
-  for (const task of Object.values(tables.TASK)) {
+  for (const task of Object.values(tables.TASK ?? {})) {
     tables.PROJECT[task.proj_id].tasks.push(task);
     tables.PROJWBS[task.wbs_id].tasks.push(task);
   }
 
-  for (const rsrc of Object.values(tables.TASKRSRC)) {
+  for (const rsrc of Object.values(tables.TASKRSRC ?? {})) {
     tables.TASK[rsrc.task_id].resources.push(rsrc);
   }
   return tables;

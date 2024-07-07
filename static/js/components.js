@@ -77,12 +77,12 @@ export const taskTable = (tasks, level) => {
 };
 
 const taskStart = (task) => {
-  if (task.task_type == "TT_Mile") return "";
+  if (task.task_type == "TT_FinMile") return "";
   return `${formatDate(task.start)}${task.notStarted ? "" : " A"}`;
 };
 
 const taskFinish = (task) => {
-  if (task.task_type == "TT_FinMile") return "";
+  if (task.task_type == "TT_Mile") return "";
   return `${formatDate(task.finish)}${task.completed ? " A" : ""}`;
 };
 

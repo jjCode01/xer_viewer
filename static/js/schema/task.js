@@ -63,6 +63,7 @@ export default class Task {
     this.percent = calcPercent(this);
     this.search = `${this.task_code} ${this.task_name}`;
     this.calendar = undefined;
+    this.wbs = undefined;
     // if (this.calendar) this.calendar.assignments += 1;
     // this.wbs = undefined;
     // this.wbsStruct = [this.wbs];

@@ -18,3 +18,10 @@ export const taskStatus = {
   TK_Active: "In Progress",
   TK_Complete: "Complete",
 };
+
+export const durationType = {
+  DT_FixedDUR2: "Fixed Duration & Units",
+  DT_FixedDrtn: "Fixed Duration & Units/Time",
+  DT_FixedQty: "Fixed Units",
+  DT_FixedRate: "Fixed Units/Time",
+};

@@ -40,6 +40,7 @@ export function parseTables(data) {
 
   for (const task of Object.values(tables.TASK ?? {})) {
     task.calendar = tables.CALENDAR[task.clndr_id];
+    task.wbs = tables.PROJWBS[task.wbs_id];
     tables.PROJECT[task.proj_id].tasks.push(task);
     tables.PROJWBS[task.wbs_id].tasks.push(task);
   }

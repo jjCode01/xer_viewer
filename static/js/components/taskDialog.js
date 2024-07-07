@@ -24,8 +24,7 @@ function updateGeneralTab(task) {
   //   TODO: Fix duration type
   durationType.textContent = task.duration_type;
   percentType.textContent = percentTypes[task.complete_pct_type];
-  //   TODO: Fix calendar
-  calendar.textContent = task.clndr_id;
+  calendar.textContent = task.calendar.clndr_name;
 }
 
 function updateStatusTab(task) {

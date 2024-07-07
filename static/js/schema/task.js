@@ -62,7 +62,7 @@ export default class Task {
     this.secondConstraint = CONSTRAINTTYPES[this.cstr_type2];
     this.percent = calcPercent(this);
     this.search = `${this.task_code} ${this.task_name}`;
-    // this.calendar = calendar;
+    this.calendar = undefined;
     // if (this.calendar) this.calendar.assignments += 1;
     // this.wbs = undefined;
     // this.wbsStruct = [this.wbs];

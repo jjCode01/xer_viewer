@@ -2,8 +2,10 @@ import Task from "./schema/task.js";
 import WbsNode from "./schema/wbs.js";
 import Project from "./schema/project.js";
 import { TaskRsrc } from "./schema/rsrc.js";
+import { Clndr } from "./schema/clndr.js";
 
 const tableIdMap = {
+  CALENDAR: "clndr_id",
   PROJECT: "proj_id",
   PROJWBS: "wbs_id",
   TASK: "task_id",
@@ -37,6 +39,7 @@ export function parseTables(data) {
   }
 
   for (const task of Object.values(tables.TASK ?? {})) {
+    task.calendar = tables.CALENDAR[task.clndr_id];
     tables.PROJECT[task.proj_id].tasks.push(task);
     tables.PROJWBS[task.wbs_id].tasks.push(task);
   }
@@ -58,7 +61,9 @@ const convertArrToObj = (arr, tableName) => {
   const key = tableIdMap[tableName];
   if (!key) return;
   let entries = arr.reduce((obj, el) => {
-    if (tableName === "PROJWBS") {
+    if (tableName === "CALENDAR") {
+      obj[el[key]] = new Clndr(el);
+    } else if (tableName === "PROJWBS") {
       obj[el[key]] = new WbsNode(el);
     } else if (tableName === "TASK") {
       obj[el[key]] = new Task(el);

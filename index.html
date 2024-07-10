@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title id="title">XER File</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" type="text/css" href="./static/css/style.css" />
     <link rel="stylesheet" type="text/css" href="./static/css/dialog.css" />
   </head>
@@ -13,9 +13,11 @@
   <body>
     <div id="container">
       <header>
-        <div style="display: flex;">
-          <img src="./static/img/logo 64x64.png" alt="XER Viewer">
-          <h1 style="margin-left: 10px;"><a href="#" onclick="location.reload();">XER Viewer</a></h1>
+        <div style="display: flex">
+          <img src="./static/img/logo 64x64.png" alt="XER Viewer" />
+          <h1 style="margin-left: 10px">
+            <a href="#" onclick="location.reload();">XER Viewer</a>
+          </h1>
         </div>
         <input
           type="text"
@@ -40,8 +42,8 @@
       <div id="sched"></div>
       <dialog id="taskDialog">
         <div style="display: flex">
-            <h4 id="task-code"></h4>
-            <!-- <h4 id="task-name"></h3> -->
+          <h4 id="task-code"></h4>
+          <!-- <h4 id="task-name"></h3> -->
         </div>
         <div class="dialog-container">
           <div class="tabs">
@@ -55,44 +57,60 @@
           </div>
           <div class="tab-content">
             <div id="tab1" class="tab-pane active">
-              <div class="table-grid">
-                <p>Activity Type:</p><p id="activity-type" class="value"></p>
-                <p>Duration Type:</p><p id="duration-type" class="value"></p>
-                <p>% Complete Type:</p><p id="percent-type" class="value"></p>
-                <p>Calendar:</p><p id="calendar" class="value"></p>
-                <p>WBS:</p><p id="wbs-code" class="value"></p>
-
+              <div class="table-grid" style="flex-grow: 1;">
+                <p>Activity Type:</p>
+                <p id="activity-type" class="value"></p>
+                <p>Duration Type:</p>
+                <p id="duration-type" class="value"></p>
+                <p>% Complete Type:</p>
+                <p id="percent-type" class="value"></p>
+                <p>Calendar:</p>
+                <p id="calendar" class="value"></p>
+                <p>WBS:</p>
+                <p id="wbs-code" class="value"></p>
               </div>
-              
             </div>
             <div id="tab2" class="tab-pane">
-              <fieldset class="table-grid">
-                <legend>Duration:</legend>
-                <p>Original:</p><p id="original-dur" class="value"></p>
-                <p>Actual:</p><p id="actual-dur" class="value"></p>
-                <p>Remaining:</p><p id="remain-dur" class="value"></p>
-                <p>At Complete:</p><p id="at-complete-dur" class="value"></p>
+              <fieldset class="table-grid" style="flex-grow: 1;">
+                <legend>Duration</legend>
+                <p>Original:</p>
+                <p id="original-dur" class="value"></p>
+                <p>Actual:</p>
+                <p id="actual-dur" class="value"></p>
+                <p>Remaining:</p>
+                <p id="remain-dur" class="value"></p>
+                <p>At Complete:</p>
+                <p id="at-complete-dur" class="value"></p>
+              </fieldset>
+              <fieldset class="table-grid" style="flex-grow: 1;">
+                <legend>Float</legend>
+                <p>Total Float:</p>
+                <p id="total-float" class="value"></p>
+                <p>Free Float:</p>
+                <p id="free-float" class="value"></p>
               </fieldset>
             </div>
             <div id="tab3" class="tab-pane">
-              <div id="rsrc-table">
-                <div class="col">Resource</div>
-                <div class="col">Account</div>
-                <div class="col">Budget Cost</div>
-                <div class="col">Actual Cost</div>
-                <div class="col">Remain Cost</div>
-                <div class="col">Budget Qty</div>
-                <div class="col">Actual Qty</div>
-                <div class="col">Remain Qty</div>
+              <div
+                style="min-height: 240px; background-color: white; border: 1px solid #999; flex-grow: 1;"
+              >
+                <div class="rsrc-table" id="task-resources">
+                  <div class="col" style="border-right: 1px solid #999;">Resource</div>
+                  <div class="col" style="border-right: 1px solid #999;">Account</div>
+                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Budget Cost</div>
+                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Actual Cost</div>
+                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Remain Cost</div>
+                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Budget Qty</div>
+                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Actual Qty</div>
+                  <div class="col" style="text-align: right;">Remain Qty</div>
+                </div>
+                <!-- <div class="rsrc-table" id="task-resources" style="margin: 0; padding: 0;"></div> -->
               </div>
-
-              
             </div>
             <div id="tab4" class="tab-pane">Coming Soon</div>
             <div id="tab5" class="tab-pane">Coming Soon</div>
             <div id="tab6" class="tab-pane">Coming Soon</div>
             <div id="tab7" class="tab-pane">Coming Soon</div>
-            
           </div>
           <button id="closeDialog">Close</button>
         </div>

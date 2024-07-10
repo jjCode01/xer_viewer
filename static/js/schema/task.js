@@ -79,18 +79,13 @@ export default class Task {
     if (this.notStarted || this.isMilestone) return 0;
 
     let actDur = 0;
-    let date = new Date(this.start);
 
     if (this.inProgress) {
-      while (date < this.project.last_recalc_date) {
-        if (this.calendar.isWorkDay(date)) actDur++;
-        date.setDate(date.getDate() + 1); // Move to the next day
-      }
+      const dataDate = new Date(this.project.last_recalc_date);
+      const lastDate = dataDate.setDate(dataDate.getDate() - 1);
+      actDur = this.calendar.calcWorkDays(this.start, lastDate);
     } else if (this.completed) {
-      while (date <= this.finish) {
-        if (this.calendar.isWorkDay(date)) actDur++;
-        date.setDate(date.getDate() + 1); // Move to the next day
-      }
+      actDur = this.calendar.calcWorkDays(this.start, this.finish);
     }
 
     return actDur === 0 ? 1 : actDur;

@@ -5,7 +5,7 @@
 
 dialog {
   padding: 0;
-  min-width: 360px;
+  width: 960px;
   min-height: 500px;
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
@@ -36,9 +36,6 @@ dialog {
   cursor: pointer;
   background-color: white;
   border: 1px solid var(--border-color);
-  /* border-top: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  border-bottom: 0; */
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   font-size: 1rem;
@@ -50,6 +47,7 @@ dialog {
 }
 
 .tab-content {
+  /* width: 100%; */
   border-left: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
@@ -65,20 +63,21 @@ dialog {
 /* Tab content styling */
 .tab-pane {
   display: none; /* Hide all tab panes by default */
-  padding: 20px;
+  padding: 10px;
 }
 
 .tab-pane.active {
-  display: block; /* Show the active tab pane */
+  display: flex; /* Show the active tab pane */
+  align-items: start;
 }
 
-.tab-pane #rsrc-table {
+.rsrc-table {
   font-size: .9rem;
   display: grid;
   background-color: white;
-  border: 1px solid var(--border-color);
-  min-height: 240px;
-  grid-template-columns: repeat(8, minmax(50px, 120px));
+  /* border: 1px solid var(--border-color); */
+  grid-template-columns: repeat(8, auto);
+  /* padding: 5px; */
 }
 
 .tab-pane p {
@@ -104,6 +103,11 @@ dialog {
   background-color: white;
   border-radius: 5px;
   padding: 5px
+}
+
+.col, .cell {
+  border-bottom: 1px solid var(--border-color);
+  padding: 5px;
 }
 
 

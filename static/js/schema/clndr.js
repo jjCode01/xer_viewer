@@ -90,6 +90,16 @@ export class Clndr {
     this.exceptions = parseExceptions(this);
   }
 
+  calcWorkDays(date1, date2) {
+    let date = new Date(date1);
+    let dur = 0;
+    while (date <= date2) {
+      if (this.isWorkDay(date)) dur++;
+      date.setDate(date.getDate() + 1); // Move to the next day
+    }
+    return dur;
+  }
+
   isWorkDay(date) {
     return (
       (this.week[date.getDay()].hours > 0 &&

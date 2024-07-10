@@ -1,15 +1,27 @@
 import Task from "./schema/task.js";
 import WbsNode from "./schema/wbs.js";
 import Project from "./schema/project.js";
-import { TaskRsrc } from "./schema/rsrc.js";
+import { Account, Rsrc, TaskRsrc } from "./schema/rsrc.js";
 import { Clndr } from "./schema/clndr.js";
 
 const tableIdMap = {
+  ACCOUNT: "acct_id",
   CALENDAR: "clndr_id",
   PROJECT: "proj_id",
   PROJWBS: "wbs_id",
+  RSRC: "rsrc_id",
   TASK: "task_id",
   TASKRSRC: "taskrsrc_id",
+};
+
+const idObjMap = {
+  acct_id: Account,
+  clndr_id: Clndr,
+  proj_id: Project,
+  rsrc_id: Rsrc,
+  task_id: Task,
+  taskrsrc_id: TaskRsrc,
+  wbs_id: WbsNode,
 };
 
 export function parseTables(data) {
@@ -46,8 +58,14 @@ export function parseTables(data) {
     tables.PROJWBS[task.wbs_id].tasks.push(task);
   }
 
-  for (const rsrc of Object.values(tables.TASKRSRC ?? {})) {
-    tables.TASK[rsrc.task_id].resources.push(rsrc);
+  for (const res of Object.values(tables.TASKRSRC ?? {})) {
+    res.rsrc = tables.RSRC[res.rsrc_id];
+    if (res.acct_id != "" && "ACCOUNT" in tables) {
+      res.acct = tables.ACCOUNT[res.acct_id];
+    } else {
+      res.acct = null;
+    }
+    tables.TASK[res.task_id].resources.push(res);
   }
   return tables;
 }
@@ -63,17 +81,8 @@ const convertArrToObj = (arr, tableName) => {
   const key = tableIdMap[tableName];
   if (!key) return;
   let entries = arr.reduce((obj, el) => {
-    if (tableName === "CALENDAR") {
-      obj[el[key]] = new Clndr(el);
-      console.log(obj[el[key]]);
-    } else if (tableName === "PROJWBS") {
-      obj[el[key]] = new WbsNode(el);
-    } else if (tableName === "TASK") {
-      obj[el[key]] = new Task(el);
-    } else if (tableName === "PROJECT") {
-      obj[el[key]] = new Project(el);
-    } else if (tableName === "TASKRSRC") {
-      obj[el[key]] = new TaskRsrc(el);
+    if (key in idObjMap) {
+      obj[el[key]] = new idObjMap[key](el);
     } else {
       obj[el[key]] = el;
     }

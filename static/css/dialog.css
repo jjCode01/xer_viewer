@@ -8,7 +8,7 @@ dialog {
   min-width: 360px;
   min-height: 500px;
   background-color: var(--bg-color);
-  border: 0;
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   box-shadow: 0px 0px 10px 3px gray;
 }
@@ -70,6 +70,15 @@ dialog {
 
 .tab-pane.active {
   display: block; /* Show the active tab pane */
+}
+
+.tab-pane #rsrc-table {
+  font-size: .9rem;
+  display: grid;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  min-height: 240px;
+  grid-template-columns: repeat(8, minmax(50px, 120px));
 }
 
 .tab-pane p {

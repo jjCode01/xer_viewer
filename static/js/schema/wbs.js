@@ -41,9 +41,5 @@ export default class WbsNode {
 
 function calcCost(node, attr) {
   const taskCost = node.tasks.reduce((acc, task) => acc + task[attr], 0.0);
-  const totalCost = node.children.reduce(
-    (acc, child) => acc + child[attr],
-    taskCost
-  );
-  return totalCost;
+  return node.children.reduce((acc, child) => acc + child[attr], taskCost);
 }

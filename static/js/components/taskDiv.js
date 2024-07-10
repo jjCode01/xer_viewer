@@ -1,14 +1,15 @@
-import { formatCost, formatDate, formatNumber } from "./utils.js";
+import { formatCost, formatDate, formatNumber } from "../utils.js";
+import pTag from "./pTag.js";
 
 const DEFAULTWIDTHS = [
   "240px",
   "minmax(300px, auto)",
   "60px",
   "60px",
-  "120px",
-  "120px",
+  "110px",
+  "110px",
   "60px",
-  "150px",
+  "140px",
 ];
 
 const DEFAULTLABELS = [
@@ -22,15 +23,6 @@ const DEFAULTLABELS = [
   "Budgeted Cost",
 ];
 
-export const pTag = (text, fmt = {}) => {
-  const p = document.createElement("p");
-  p.textContent = text;
-  for (let opt in fmt) {
-    p.style[opt] = fmt[opt];
-  }
-  return p;
-};
-
 export const schedLabels = () => {
   const div = document.createElement("div");
   div.id = "col-header";
@@ -41,7 +33,9 @@ export const schedLabels = () => {
     div.appendChild(pTag(label));
   }
 
-  div.style.border = "1px solid #999";
+  div.style.borderLeft = "1px solid #999";
+  div.style.borderTop = "1px solid #999";
+
   return div;
 };
 
@@ -56,11 +50,11 @@ export const taskTable = (tasks, level) => {
     }
   });
   for (let task of sortedTasks) {
-    const idColWidth = 230 - level * 10;
+    const idColWidth = 229 - level * 11;
     const row = taskRow(idColWidth, task.task_id);
 
     const taskCode = pTag(task.task_code, {
-      paddingLeft: `${70 - level * 10}px`,
+      paddingLeft: "10px",
     });
 
     row.appendChild(taskCode);

@@ -64,9 +64,6 @@ export default class Task {
     this.search = `${this.task_code} ${this.task_name}`;
     this.calendar = undefined;
     this.wbs = undefined;
-    // if (this.calendar) this.calendar.assignments += 1;
-    // this.wbs = undefined;
-    // this.wbsStruct = [this.wbs];
   }
   get budgetCost() {
     return this.resources.reduce((a, r) => a + r.target_cost, 0.0);
@@ -98,36 +95,11 @@ export default class Task {
   get remainingQty() {
     return this.resources.reduce((a, r) => a + r.remain_qty, 0.0);
   }
-
-  // get img(){
-  //     let img = new Image(20, 10);
-  //     let post = (this.longestPath && !this.completed) ? '-lp.png' : '.png';
-  //     let pre = this.isMilestone ? 'ms-' : '';
-  //     img.src = "./static/js/modules/img/" + `${pre}${this.status_code}${post}`
-  //     return img;
-  // }
-
-  print() {
-    console.log(`${this.task_code} - ${this.task_name}`);
-  }
 }
 
 Task.prototype.equals = function (other) {
   return this.task_code === other.task_code;
 };
-
-// export function statusImg(task) {
-//     let img = new Image(20, 10);
-//     if (!task || !(task instanceof Task)) {
-//         img.src = "./img/deleted.png";
-//         return img;
-//     }
-//     let postFix = (task.longestPath && !task.completed) ? '-lp.png' : '.png';
-//     let preFix = task.isMilestone ? 'ms-' : '';
-//     let imgName = task.notStarted ? `${preFix}open${postFix}` : (task.inProgress ? `${preFix}active${postFix}` : `${preFix}complete${postFix}`);
-//     img.src = "./img/" + imgName;
-//     return img;
-// }
 
 const calcPercent = (task) => {
   if (task.notStarted) return 0.0;

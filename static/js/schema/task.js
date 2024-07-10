@@ -62,6 +62,7 @@ export default class Task {
     this.secondConstraint = CONSTRAINTTYPES[this.cstr_type2];
     this.percent = calcPercent(this);
     this.search = `${this.task_code} ${this.task_name}`;
+    this.project = undefined;
     this.calendar = undefined;
     this.wbs = undefined;
   }
@@ -73,6 +74,26 @@ export default class Task {
       (a, r) => a + r.act_reg_cost + r.act_ot_cost,
       0.0
     );
+  }
+  actualDuration() {
+    if (this.notStarted || this.isMilestone) return 0;
+
+    let actDur = 0;
+    let date = new Date(this.start);
+
+    if (this.inProgress) {
+      while (date < this.project.last_recalc_date) {
+        if (this.calendar.isWorkDay(date)) actDur++;
+        date.setDate(date.getDate() + 1); // Move to the next day
+      }
+    } else if (this.completed) {
+      while (date <= this.finish) {
+        if (this.calendar.isWorkDay(date)) actDur++;
+        date.setDate(date.getDate() + 1); // Move to the next day
+      }
+    }
+
+    return actDur === 0 ? 1 : actDur;
   }
   get thisPeriodCost() {
     return this.resources.reduce((a, r) => a + r.act_this_per_cost, 0.0);

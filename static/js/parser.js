@@ -39,6 +39,7 @@ export function parseTables(data) {
   }
 
   for (const task of Object.values(tables.TASK ?? {})) {
+    task.project = tables.PROJECT[task.proj_id];
     task.calendar = tables.CALENDAR[task.clndr_id];
     task.wbs = tables.PROJWBS[task.wbs_id];
     tables.PROJECT[task.proj_id].tasks.push(task);
@@ -64,6 +65,7 @@ const convertArrToObj = (arr, tableName) => {
   let entries = arr.reduce((obj, el) => {
     if (tableName === "CALENDAR") {
       obj[el[key]] = new Clndr(el);
+      console.log(obj[el[key]]);
     } else if (tableName === "PROJWBS") {
       obj[el[key]] = new WbsNode(el);
     } else if (tableName === "TASK") {

@@ -21,7 +21,6 @@ export function updateTaskDialog(task) {
 
 function updateGeneralTab(task) {
   taskCode.textContent = `${task.task_code} - ${task.task_name}`;
-  //   taskName.textContent = task.task_name;
   activityType.textContent = taskTypes[task.task_type];
   taskDurationType.textContent =
     durationType[task.duration_type] ?? task.duration_type;
@@ -31,8 +30,8 @@ function updateGeneralTab(task) {
 }
 
 function updateStatusTab(task) {
-  origDur.textContent = parseInt(task.target_drtn_hr_cnt / 8);
-  // TODO: Calculate Actual Duration
-  remDur.textContent = parseInt(task.remain_drtn_hr_cnt / 8);
-  // TODO: Calculate At Complete Duration
+  origDur.textContent = task.origDur;
+  actDur.textContent = task.actualDuration();
+  remDur.textContent = task.remDur;
+  atCompDur.textContent = task.actualDuration() + task.remDur;
 }

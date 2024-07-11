@@ -75,9 +75,14 @@ dialog {
   font-size: .9rem;
   display: grid;
   background-color: white;
-  /* border: 1px solid var(--border-color); */
   grid-template-columns: repeat(8, auto);
-  /* padding: 5px; */
+}
+
+.rel-table {
+  font-size: .9rem;
+  display: grid;
+  background-color: white;
+  grid-template-columns: repeat(4, auto);
 }
 
 .tab-pane p {

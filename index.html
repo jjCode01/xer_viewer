@@ -57,7 +57,7 @@
           </div>
           <div class="tab-content">
             <div id="tab1" class="tab-pane active">
-              <div class="table-grid" style="flex-grow: 1;">
+              <div class="table-grid" style="flex-grow: 1">
                 <p>Activity Type:</p>
                 <p id="activity-type" class="value"></p>
                 <p>Duration Type:</p>
@@ -71,7 +71,7 @@
               </div>
             </div>
             <div id="tab2" class="tab-pane">
-              <fieldset class="table-grid" style="flex-grow: 1;">
+              <fieldset class="table-grid" style="flex-grow: 1">
                 <legend>Duration</legend>
                 <p>Original:</p>
                 <p id="original-dur" class="value"></p>
@@ -82,7 +82,7 @@
                 <p>At Complete:</p>
                 <p id="at-complete-dur" class="value"></p>
               </fieldset>
-              <fieldset class="table-grid" style="flex-grow: 1;">
+              <fieldset class="table-grid" style="flex-grow: 1">
                 <legend>Float</legend>
                 <p>Total Float:</p>
                 <p id="total-float" class="value"></p>
@@ -92,23 +92,107 @@
             </div>
             <div id="tab3" class="tab-pane">
               <div
-                style="min-height: 240px; background-color: white; border: 1px solid #999; flex-grow: 1;"
+                style="
+                  min-height: 240px;
+                  background-color: white;
+                  border: 1px solid #999;
+                  flex-grow: 1;
+                "
               >
                 <div class="rsrc-table" id="task-resources">
-                  <div class="col" style="border-right: 1px solid #999;">Resource</div>
-                  <div class="col" style="border-right: 1px solid #999;">Account</div>
-                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Budget Cost</div>
-                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Actual Cost</div>
-                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Remain Cost</div>
-                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Budget Qty</div>
-                  <div class="col" style="border-right: 1px solid #999; text-align: right;">Actual Qty</div>
-                  <div class="col" style="text-align: right;">Remain Qty</div>
+                  <div class="col" style="border-right: 1px solid #999">
+                    Resource
+                  </div>
+                  <div class="col" style="border-right: 1px solid #999">
+                    Account
+                  </div>
+                  <div
+                    class="col"
+                    style="border-right: 1px solid #999; text-align: right"
+                  >
+                    Budget Cost
+                  </div>
+                  <div
+                    class="col"
+                    style="border-right: 1px solid #999; text-align: right"
+                  >
+                    Actual Cost
+                  </div>
+                  <div
+                    class="col"
+                    style="border-right: 1px solid #999; text-align: right"
+                  >
+                    Remain Cost
+                  </div>
+                  <div
+                    class="col"
+                    style="border-right: 1px solid #999; text-align: right"
+                  >
+                    Budget Qty
+                  </div>
+                  <div
+                    class="col"
+                    style="border-right: 1px solid #999; text-align: right"
+                  >
+                    Actual Qty
+                  </div>
+                  <div class="col" style="text-align: right">Remain Qty</div>
                 </div>
                 <!-- <div class="rsrc-table" id="task-resources" style="margin: 0; padding: 0;"></div> -->
               </div>
             </div>
-            <div id="tab4" class="tab-pane">Coming Soon</div>
-            <div id="tab5" class="tab-pane">Coming Soon</div>
+            <div id="tab4" class="tab-pane">
+              <div
+                style="
+                  min-height: 240px;
+                  background-color: white;
+                  border: 1px solid #999;
+                  flex-grow: 1;
+                "
+              >
+                <div class="rel-table" id="task-predecessors">
+                  <div class="col" style="border-right: 1px solid #999">
+                    Act ID
+                  </div>
+                  <div class="col" style="border-right: 1px solid #999">
+                    Act Name
+                  </div>
+                  <div
+                    class="col"
+                    style="border-right: 1px solid #999; text-align: center"
+                  >
+                    Link
+                  </div>
+                  <div class="col" style="text-align: center">Lag</div>
+                </div>
+              </div>
+            </div>
+            <div id="tab5" class="tab-pane">
+              <div
+                style="
+                  min-height: 240px;
+                  background-color: white;
+                  border: 1px solid #999;
+                  flex-grow: 1;
+                "
+              >
+                <div class="rel-table" id="task-successors">
+                  <div class="col" style="border-right: 1px solid #999">
+                    Act ID
+                  </div>
+                  <div class="col" style="border-right: 1px solid #999">
+                    Act Name
+                  </div>
+                  <div
+                    class="col"
+                    style="border-right: 1px solid #999; text-align: center"
+                  >
+                    Link
+                  </div>
+                  <div class="col" style="text-align: center">Lag</div>
+                </div>
+              </div>
+            </div>
             <div id="tab6" class="tab-pane">Coming Soon</div>
             <div id="tab7" class="tab-pane">Coming Soon</div>
           </div>

@@ -3,6 +3,7 @@ export default class Project {
     Object.assign(this, obj);
     this.wbs = undefined;
     this.tasks = [];
+    this.relationships = [];
   }
 
   get actualCost() {

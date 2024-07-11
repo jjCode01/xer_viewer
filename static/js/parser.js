@@ -3,6 +3,7 @@ import WbsNode from "./schema/wbs.js";
 import Project from "./schema/project.js";
 import { Account, Rsrc, TaskRsrc } from "./schema/rsrc.js";
 import { Clndr } from "./schema/clndr.js";
+import { TaskPred } from "./schema/taskpred.js";
 
 const tableIdMap = {
   ACCOUNT: "acct_id",
@@ -12,6 +13,7 @@ const tableIdMap = {
   RSRC: "rsrc_id",
   TASK: "task_id",
   TASKRSRC: "taskrsrc_id",
+  TASKPRED: "task_pred_id",
 };
 
 const idObjMap = {
@@ -21,6 +23,7 @@ const idObjMap = {
   rsrc_id: Rsrc,
   task_id: Task,
   taskrsrc_id: TaskRsrc,
+  task_pred_id: TaskPred,
   wbs_id: WbsNode,
 };
 
@@ -66,6 +69,15 @@ export function parseTables(data) {
       res.acct = null;
     }
     tables.TASK[res.task_id].resources.push(res);
+  }
+
+  for (const rel of Object.values(tables.TASKPRED ?? {})) {
+    const proj = tables.PROJECT[rel.proj_id];
+    proj.relationships.push(rel);
+    rel.predecessor = tables.TASK[rel.pred_task_id];
+    rel.successor = tables.TASK[rel.task_id];
+    rel.predecessor.successors.push(rel);
+    rel.successor.predecessors.push(rel);
   }
   return tables;
 }

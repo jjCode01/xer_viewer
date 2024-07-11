@@ -14,13 +14,20 @@ const origDur = document.getElementById("original-dur");
 const actDur = document.getElementById("actual-dur");
 const remDur = document.getElementById("remain-dur");
 const atCompDur = document.getElementById("at-complete-dur");
+const totalFloat = document.getElementById("total-float");
+const freeFloat = document.getElementById("free-float");
 
 const rsrcTable = document.getElementById("task-resources");
+
+const predTable = document.getElementById("task-predecessors");
+const succTable = document.getElementById("task-successors");
 
 export function updateTaskDialog(task) {
   updateGeneralTab(task);
   updateStatusTab(task);
   updateRsrcTab(task);
+  updatePredTab(task);
+  updateSuccTab(task);
 }
 
 function updateGeneralTab(task) {
@@ -38,6 +45,8 @@ function updateStatusTab(task) {
   actDur.textContent = task.actualDuration();
   remDur.textContent = task.remDur;
   atCompDur.textContent = task.actualDuration() + task.remDur;
+  totalFloat.textContent = isNaN(task.totalFloat) ? "" : task.totalFloat;
+  freeFloat.textContent = isNaN(task.freeFloat) ? "" : task.freeFloat;
 }
 
 function updateRsrcTab(task) {
@@ -90,6 +99,51 @@ function updateRsrcTab(task) {
         textAlign: "right",
       })
     );
+  }
+}
+
+function updatePredTab(task) {
+  const children = predTable.children;
+
+  for (let i = children.length - 1; i >= 0; i--) {
+    if (children[i].classList.contains("cell")) {
+      predTable.removeChild(children[i]);
+    }
+  }
+
+  for (const pred of task.predecessors) {
+    predTable.appendChild(
+      makeDiv(pred.predecessor.task_code, { borderRight: "1px solid #999" })
+    );
+    predTable.appendChild(
+      makeDiv(pred.predecessor.task_name, { borderRight: "1px solid #999" })
+    );
+    predTable.appendChild(
+      makeDiv(pred.link, { borderRight: "1px solid #999", textAlign: "center" })
+    );
+    predTable.appendChild(makeDiv(pred.lag, { textAlign: "center" }));
+  }
+}
+
+function updateSuccTab(task) {
+  const children = succTable.children;
+
+  for (let i = children.length - 1; i >= 0; i--) {
+    if (children[i].classList.contains("cell")) {
+      succTable.removeChild(children[i]);
+    }
+  }
+  for (const pred of task.successors) {
+    succTable.appendChild(
+      makeDiv(pred.successor.task_code, { borderRight: "1px solid #999" })
+    );
+    succTable.appendChild(
+      makeDiv(pred.successor.task_name, { borderRight: "1px solid #999" })
+    );
+    succTable.appendChild(
+      makeDiv(pred.link, { borderRight: "1px solid #999", textAlign: "center" })
+    );
+    succTable.appendChild(makeDiv(pred.lag, { textAlign: "center" }));
   }
 }
 

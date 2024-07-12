@@ -47,7 +47,6 @@ dialog {
 }
 
 .tab-content {
-  /* width: 100%; */
   border-left: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
@@ -57,7 +56,6 @@ dialog {
 .tab.active {
   background-color: var(--bg-color); /* Highlight active tab */
   border-bottom: 0;
-  /* color: #eee; */
 }
 
 /* Tab content styling */
@@ -113,6 +111,11 @@ dialog {
 .col, .cell {
   border-bottom: 1px solid var(--border-color);
   padding: 5px;
+}
+
+.col {
+  background-color: #eee;
+  font-weight: 600;
 }
 
 

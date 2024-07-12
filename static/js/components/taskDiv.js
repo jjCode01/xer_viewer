@@ -4,11 +4,11 @@ import pTag from "./pTag.js";
 const DEFAULTWIDTHS = [
   "240px",
   "minmax(300px, auto)",
-  "60px",
-  "60px",
-  "110px",
-  "110px",
-  "60px",
+  "55px",
+  "55px",
+  "105px",
+  "105px",
+  "55px",
   "140px",
 ];
 

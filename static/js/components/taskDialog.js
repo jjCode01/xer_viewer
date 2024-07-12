@@ -103,14 +103,7 @@ function updateRsrcTab(task) {
 }
 
 function updatePredTab(task) {
-  const children = predTable.children;
-
-  for (let i = children.length - 1; i >= 0; i--) {
-    if (children[i].classList.contains("cell")) {
-      predTable.removeChild(children[i]);
-    }
-  }
-
+  deleteCells(predTable);
   for (const pred of task.predecessors) {
     predTable.appendChild(
       makeDiv(pred.predecessor.task_code, { borderRight: "1px solid #999" })
@@ -126,13 +119,7 @@ function updatePredTab(task) {
 }
 
 function updateSuccTab(task) {
-  const children = succTable.children;
-
-  for (let i = children.length - 1; i >= 0; i--) {
-    if (children[i].classList.contains("cell")) {
-      succTable.removeChild(children[i]);
-    }
-  }
+  deleteCells(succTable);
   for (const pred of task.successors) {
     succTable.appendChild(
       makeDiv(pred.successor.task_code, { borderRight: "1px solid #999" })
@@ -144,6 +131,15 @@ function updateSuccTab(task) {
       makeDiv(pred.link, { borderRight: "1px solid #999", textAlign: "center" })
     );
     succTable.appendChild(makeDiv(pred.lag, { textAlign: "center" }));
+  }
+}
+
+function deleteCells(el) {
+  const children = el.children;
+  for (let i = children.length - 1; i >= 0; i--) {
+    if (children[i].classList.contains("cell")) {
+      el.removeChild(children[i]);
+    }
   }
 }
 

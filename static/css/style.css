@@ -1,7 +1,17 @@
 :root {
   --border-color: #999;
   --max-width: 1460px;
+  --min-width: 1060px;
 }
+
+html,
+body {
+  font-family: Verdana, sans-serif;
+  padding: 0;
+  margin: 0;
+  min-width: var(--min-width)
+}
+
 #container {
   display: flex;
   flex-direction: column;
@@ -12,7 +22,7 @@
 
 #sched {
   max-width: var(--max-width);
-  min-width: 965px;
+  min-width: var(--min-width);
   margin: 0 auto 10px;
 }
 
@@ -50,12 +60,7 @@
   background-color: #cccccc;
 }
 
-html,
-body {
-  font-family: Verdana, sans-serif;
-  padding: 0;
-  margin: 0;
-}
+
 header {
   z-index: 99;
   position: sticky;

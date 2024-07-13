@@ -1,7 +1,11 @@
+/**
+ * A class to represent a Node in a Work Breakdwon Structure.
+ */
 export default class WbsNode {
   constructor(obj) {
     Object.assign(this, obj);
     this.parent = undefined;
+    this.project = undefined;
     this.children = [];
     this.tasks = [];
   }

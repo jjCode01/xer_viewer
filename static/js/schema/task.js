@@ -53,6 +53,7 @@ export default class Task {
     this.predecessors = [];
     this.successors = [];
     this.memos = {};
+    this.codes = [];
     this.start = this.notStarted ? this.early_start_date : this.act_start_date;
     this.finish = this.completed ? this.act_end_date : this.early_end_date;
     this.percentType = PERCENTTYPES[this.complete_pct_type];

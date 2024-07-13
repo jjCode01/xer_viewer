@@ -83,7 +83,14 @@ dialog {
   font-size: .9rem;
   display: grid;
   background-color: white;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: minmax(100px, max-content) auto repeat(2, 80px);
+}
+
+.code-table {
+  font-size: .9rem;
+  display: grid;
+  background-color: white;
+  grid-template-columns: repeat(2, minmax(150px, max-content)) auto;
 }
 
 .tab-pane p {

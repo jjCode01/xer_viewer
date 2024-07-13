@@ -22,12 +22,15 @@ const rsrcTable = document.getElementById("task-resources");
 const predTable = document.getElementById("task-predecessors");
 const succTable = document.getElementById("task-successors");
 
+const codeTable = document.getElementById("task-codes");
+
 export function updateTaskDialog(task) {
   updateGeneralTab(task);
   updateStatusTab(task);
   updateRsrcTab(task);
   updatePredTab(task);
   updateSuccTab(task);
+  updateCodeTab(task);
 }
 
 function updateGeneralTab(task) {
@@ -131,6 +134,19 @@ function updateSuccTab(task) {
       makeDiv(pred.link, { borderRight: "1px solid #999", textAlign: "center" })
     );
     succTable.appendChild(makeDiv(pred.lag, { textAlign: "center" }));
+  }
+}
+
+function updateCodeTab(task) {
+  deleteCells(codeTable);
+  for (const code of task.codes) {
+    codeTable.appendChild(
+      makeDiv(code.actvType.actv_code_type, { borderRight: "1px solid #999" })
+    );
+    codeTable.appendChild(
+      makeDiv(code.short_name, { borderRight: "1px solid #999" })
+    );
+    codeTable.appendChild(makeDiv(code.actv_code_name));
   }
 }
 

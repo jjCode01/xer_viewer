@@ -4,20 +4,26 @@ import Project from "./schema/project.js";
 import { Account, Rsrc, TaskRsrc } from "./schema/rsrc.js";
 import { Clndr } from "./schema/clndr.js";
 import { TaskPred } from "./schema/taskpred.js";
+import { ActvCode, ActvType } from "./schema/actvCodes.js";
 
 const tableIdMap = {
   ACCOUNT: "acct_id",
+  ACTVCODE: "actv_code_id",
+  ACTVTYPE: "actv_code_type_id",
   CALENDAR: "clndr_id",
   PROJECT: "proj_id",
   PROJWBS: "wbs_id",
   RSRC: "rsrc_id",
   TASK: "task_id",
+  TASKACTV: null,
   TASKRSRC: "taskrsrc_id",
   TASKPRED: "task_pred_id",
 };
 
 const idObjMap = {
   acct_id: Account,
+  actv_code_id: ActvCode,
+  actv_code_type_id: ActvType,
   clndr_id: Clndr,
   proj_id: Project,
   rsrc_id: Rsrc,
@@ -51,13 +57,19 @@ export function parseTables(data) {
     const key = tableIdMap[name];
     const labels = lines.shift().split("\t").slice(1);
     const rows = parseRows(labels, lines);
-    tables[name] = convertArrToObj(rows, key);
+    if (key) {
+      tables[name] = convertArrToObj(rows, key);
+    } else {
+      tables[name] = rows;
+    }
   }
 
   processWbsNodes(tables);
   processTasks(tables);
   processTaskRsrcs(tables);
   processTaskPreds(tables);
+  processActivityCodes(tables);
+  // console.log(tables);
   return tables;
 }
 
@@ -171,5 +183,18 @@ function processTaskPreds(tables) {
     rel.successor = tables.TASK[rel.task_id];
     rel.predecessor.successors.push(rel);
     rel.successor.predecessors.push(rel);
+  }
+}
+
+function processActivityCodes(tables) {
+  for (const code of Object.values(tables.ACTVCODE ?? {})) {
+    code.actvType = tables.ACTVTYPE[code.actv_code_type_id];
+    code.actvType.codes.push(code);
+  }
+
+  for (const taskCode of tables.TASKACTV ?? []) {
+    const task = tables.TASK[taskCode.task_id];
+    const code = tables.ACTVCODE[taskCode.actv_code_id];
+    task.codes.push(code);
   }
 }

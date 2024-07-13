@@ -5,19 +5,23 @@ import { Account, Rsrc, TaskRsrc } from "./schema/rsrc.js";
 import { Clndr } from "./schema/clndr.js";
 import { TaskPred } from "./schema/taskpred.js";
 import { ActvCode, ActvType } from "./schema/actvCodes.js";
+import { MemoType, TaskMemo, WbsMemo } from "./schema/memo.js";
 
 const tableIdMap = {
   ACCOUNT: "acct_id",
   ACTVCODE: "actv_code_id",
   ACTVTYPE: "actv_code_type_id",
   CALENDAR: "clndr_id",
+  MEMOTYPE: "memo_type_id",
   PROJECT: "proj_id",
   PROJWBS: "wbs_id",
   RSRC: "rsrc_id",
   TASK: "task_id",
   TASKACTV: null,
+  TASKMEMO: "memo_id",
   TASKRSRC: "taskrsrc_id",
   TASKPRED: "task_pred_id",
+  WBSMEMO: "wbs_memo_id",
 };
 
 const idObjMap = {
@@ -25,12 +29,15 @@ const idObjMap = {
   actv_code_id: ActvCode,
   actv_code_type_id: ActvType,
   clndr_id: Clndr,
+  memo_id: TaskMemo,
+  memo_type_id: MemoType,
   proj_id: Project,
   rsrc_id: Rsrc,
   task_id: Task,
   taskrsrc_id: TaskRsrc,
   task_pred_id: TaskPred,
   wbs_id: WbsNode,
+  wbs_memo_id: WbsMemo,
 };
 
 /**
@@ -69,7 +76,7 @@ export function parseTables(data) {
   processTaskRsrcs(tables);
   processTaskPreds(tables);
   processActivityCodes(tables);
-  // console.log(tables);
+  processMemos(tables);
   return tables;
 }
 
@@ -196,5 +203,13 @@ function processActivityCodes(tables) {
     const task = tables.TASK[taskCode.task_id];
     const code = tables.ACTVCODE[taskCode.actv_code_id];
     task.codes.push(code);
+  }
+}
+
+function processMemos(tables) {
+  for (const memo of Object.values(tables.TASKMEMO ?? {})) {
+    memo.memoType = tables.MEMOTYPE[memo.memo_type_id];
+    memo.task = tables.TASK[memo.task_id];
+    memo.task.memos[memo.memoType.memo_type] = memo;
   }
 }

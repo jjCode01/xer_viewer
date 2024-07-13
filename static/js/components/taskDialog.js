@@ -24,6 +24,9 @@ const succTable = document.getElementById("task-successors");
 
 const codeTable = document.getElementById("task-codes");
 
+const notebooks = document.getElementById("notebooks");
+const memos = document.getElementById("memos");
+
 export function updateTaskDialog(task) {
   updateGeneralTab(task);
   updateStatusTab(task);
@@ -31,6 +34,7 @@ export function updateTaskDialog(task) {
   updatePredTab(task);
   updateSuccTab(task);
   updateCodeTab(task);
+  updateMemoTab(task);
 }
 
 function updateGeneralTab(task) {
@@ -147,6 +151,36 @@ function updateCodeTab(task) {
       makeDiv(code.short_name, { borderRight: "1px solid #999" })
     );
     codeTable.appendChild(makeDiv(code.actv_code_name));
+  }
+}
+
+function updateMemoTab(task) {
+  deleteCells(notebooks);
+  deleteCells(memos);
+  for (const memo in task.memos) {
+    const nbDiv = makeDiv(task.memos[memo].memoType.memo_type);
+    nbDiv.classList.add("cell");
+    nbDiv.classList.add("nb");
+    nbDiv.id = task.memos[memo].memoType.memo_type;
+    notebooks.appendChild(nbDiv);
+
+    nbDiv.addEventListener("click", () => {
+      deleteCells(memos);
+      const allNbs = document.querySelectorAll(".nb");
+      allNbs.forEach((nb) => nb.classList.remove("selected"));
+      nbDiv.classList.add("selected");
+      const memoDiv = document.createElement("div");
+      memoDiv.classList.add("cell");
+      const memoHTML = new DOMParser().parseFromString(
+        task.memos[memo].task_memo,
+        "text/html"
+      );
+
+      memoDiv.innerHTML = memoHTML.lastChild.innerHTML;
+      memoDiv.style.padding = "10px";
+      memoDiv.style.border = 0;
+      memos.appendChild(memoDiv);
+    });
   }
 }
 

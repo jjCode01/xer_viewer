@@ -165,7 +165,7 @@ p.exp {
   display: grid;
 }
 
-.task.selected {
+.task.selected,
+.nb.selected {
   background-color: rgb(207, 255, 255);
 }
-

@@ -6,11 +6,12 @@
 dialog {
   padding: 0;
   width: 960px;
-  min-height: 500px;
+  min-height: 600px;
   background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   border-radius: 10px;
   box-shadow: 0px 0px 10px 3px gray;
+  overflow: hidden;
 }
 
 #task-code {
@@ -61,7 +62,9 @@ dialog {
 /* Tab content styling */
 .tab-pane {
   display: none; /* Hide all tab panes by default */
+  height: 400px;
   padding: 10px;
+  overflow: hidden;
 }
 
 .tab-pane.active {

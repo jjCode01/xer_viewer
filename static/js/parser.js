@@ -178,6 +178,7 @@ function processTaskRsrcs(tables) {
     } else {
       res.acct = null;
     }
+    tables.PROJECT[res.proj_id].resources.push(res);
     tables.TASK[res.task_id].resources.push(res);
   }
 }
@@ -210,6 +211,6 @@ function processMemos(tables) {
   for (const memo of Object.values(tables.TASKMEMO ?? {})) {
     memo.memoType = tables.MEMOTYPE[memo.memo_type_id];
     memo.task = tables.TASK[memo.task_id];
-    memo.task.memos[memo.memoType.memo_type] = memo;
+    memo.task.memos.push(memo);
   }
 }

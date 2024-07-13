@@ -157,11 +157,11 @@ function updateCodeTab(task) {
 function updateMemoTab(task) {
   deleteCells(notebooks);
   deleteCells(memos);
-  for (const memo in task.memos) {
-    const nbDiv = makeDiv(task.memos[memo].memoType.memo_type);
+  for (const memo of task.memos) {
+    const nbDiv = makeDiv(memo.memoType.memo_type);
     nbDiv.classList.add("cell");
     nbDiv.classList.add("nb");
-    nbDiv.id = task.memos[memo].memoType.memo_type;
+    nbDiv.id = memo.memoType.memo_type;
     notebooks.appendChild(nbDiv);
 
     nbDiv.addEventListener("click", () => {
@@ -172,7 +172,7 @@ function updateMemoTab(task) {
       const memoDiv = document.createElement("div");
       memoDiv.classList.add("cell");
       const memoHTML = new DOMParser().parseFromString(
-        task.memos[memo].task_memo,
+        memo.task_memo,
         "text/html"
       );
 

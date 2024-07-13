@@ -23,13 +23,17 @@ const DEFAULTLABELS = [
   "Budgeted Cost",
 ];
 
-export const schedLabels = () => {
+export const schedLabels = (hasCost = false) => {
   const div = document.createElement("div");
   div.id = "col-header";
   div.style.display = "grid";
-  div.style.gridTemplateColumns = `${DEFAULTWIDTHS.join(" ")}`;
+  if (hasCost) {
+    div.style.gridTemplateColumns = `${DEFAULTWIDTHS.join(" ")}`;
+  } else {
+    div.style.gridTemplateColumns = `${DEFAULTWIDTHS.slice(0, -1).join(" ")}`;
+  }
 
-  for (let label of DEFAULTLABELS) {
+  for (let label of hasCost ? DEFAULTLABELS : DEFAULTLABELS.slice(0, -1)) {
     div.appendChild(pTag(label));
   }
 
@@ -39,7 +43,7 @@ export const schedLabels = () => {
   return div;
 };
 
-export const taskTable = (tasks, level) => {
+export const taskTable = (tasks, level, hasCost = false) => {
   const div = document.createElement("div");
   div.classList.add("tasks");
   const sortedTasks = tasks.sort((a, b) => {
@@ -51,7 +55,7 @@ export const taskTable = (tasks, level) => {
   });
   for (let task of sortedTasks) {
     const idColWidth = 229 - level * 11;
-    const row = taskRow(idColWidth, task.task_id);
+    const row = taskRow(idColWidth, task.task_id, hasCost);
 
     const taskCode = pTag(task.task_code, {
       paddingLeft: "10px",
@@ -64,7 +68,11 @@ export const taskTable = (tasks, level) => {
     row.appendChild(pTag(taskStart(task)));
     row.appendChild(pTag(taskFinish(task)));
     row.appendChild(pTag(isNaN(task.totalFloat) ? "" : task.totalFloat));
-    row.appendChild(pTag(formatCost(task.budgetCost), { textAlign: "right" }));
+    if (hasCost) {
+      row.appendChild(
+        pTag(formatCost(task.budgetCost), { textAlign: "right" })
+      );
+    }
     div.appendChild(row);
   }
   return div;
@@ -80,13 +88,20 @@ const taskFinish = (task) => {
   return `${formatDate(task.finish)}${task.completed ? " A" : ""}`;
 };
 
-const taskRow = (col1Width, id) => {
+const taskRow = (col1Width, id, hasCost) => {
   const row = document.createElement("div");
   row.classList.add("task");
-  row.style.gridTemplateColumns = [
-    `${col1Width}px`,
-    ...DEFAULTWIDTHS.slice(1),
-  ].join(" ");
+  if (hasCost) {
+    row.style.gridTemplateColumns = [
+      `${col1Width}px`,
+      ...DEFAULTWIDTHS.slice(1),
+    ].join(" ");
+  } else {
+    row.style.gridTemplateColumns = [
+      `${col1Width}px`,
+      ...DEFAULTWIDTHS.slice(1, -1),
+    ].join(" ");
+  }
 
   row.id = id;
   return row;

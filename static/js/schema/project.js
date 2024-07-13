@@ -4,6 +4,7 @@ export default class Project {
     this.wbs = undefined;
     this.tasks = [];
     this.relationships = [];
+    this.resources = [];
   }
 
   get actualCost() {

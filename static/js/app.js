@@ -1,4 +1,4 @@
-import { schedLabels, taskTable } from "./components/taskDiv.js";
+import { schedLabels } from "./components/taskDiv.js";
 import readFile from "./reader.js";
 import { parseTables } from "./parser.js";
 import XerError from "./error.js";
@@ -111,9 +111,16 @@ async function handleDrop(files) {
 
 function showSchedule() {
   sched.replaceChildren(); // clear any existing children
-  sched.appendChild(schedLabels());
+  let hasCost = false;
+  for (const proj of Object.values(xer.PROJECT)) {
+    if (proj.resources.length > 0) {
+      hasCost = true;
+      break;
+    }
+  }
+  sched.appendChild(schedLabels(hasCost));
   for (let proj of Object.values(xer.PROJECT)) {
-    nodeDiv(proj.wbs, 0, sched);
+    nodeDiv(proj.wbs, 0, sched, hasCost);
   }
   dropArea.style.display = "none";
   searchInput.style.display = "initial";

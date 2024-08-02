@@ -13,9 +13,9 @@
   <body>
     <div id="container">
       <header>
-        <div style="display: flex">
+        <div style="display: flex; gap: 10px">
           <img src="./static/img/logo 64x64.png" alt="XER Viewer" />
-          <h1 style="margin-left: 10px">
+          <h1>
             <a href="#" onclick="location.reload();">XER Viewer</a>
           </h1>
         </div>
@@ -86,6 +86,17 @@
                 <p id="total-float" class="value"></p>
                 <p>Free Float:</p>
                 <p id="free-float" class="value"></p>
+              </fieldset>
+              <fieldset class="table-grid" style="flex-grow: 1">
+                <legend>Status</legend>
+                <p>Started:</p>
+                <p id="started" class="value"></p>
+                <p>Finished:</p>
+                <p id="finished" class="value"></p>
+                <p>Expected Finish:</p>
+                <p id="expected-finish" class="value"></p>
+                <p>Percent Complete:</p>
+                <p id="percent-complete" class="value"></p>
               </fieldset>
             </div>
             <div id="tab3" class="tab-pane">

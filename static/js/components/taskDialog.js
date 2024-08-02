@@ -1,5 +1,10 @@
 import { taskTypes, percentTypes, durationType } from "../enums.js";
-import { formatCost, formatNumber } from "../utils.js";
+import {
+  formatCost,
+  formatNumber,
+  formatDate,
+  formatPercent,
+} from "../utils.js";
 
 const taskCode = document.getElementById("task-code");
 const taskName = document.getElementById("task-name");
@@ -16,6 +21,10 @@ const remDur = document.getElementById("remain-dur");
 const atCompDur = document.getElementById("at-complete-dur");
 const totalFloat = document.getElementById("total-float");
 const freeFloat = document.getElementById("free-float");
+const started = document.getElementById("started");
+const finished = document.getElementById("finished");
+const expectedFinish = document.getElementById("expected-finish");
+const percentComplete = document.getElementById("percent-complete");
 
 const rsrcTable = document.getElementById("task-resources");
 
@@ -54,6 +63,26 @@ function updateStatusTab(task) {
   atCompDur.textContent = task.actualDuration() + task.remDur;
   totalFloat.textContent = isNaN(task.totalFloat) ? "" : task.totalFloat;
   freeFloat.textContent = isNaN(task.freeFloat) ? "" : task.freeFloat;
+  if (task.task_type == "TT_FinMile") {
+    started.style.backgroundColor = "#eee";
+    started.textContent = "";
+  } else {
+    started.style.backgroundColor = "#fff";
+    started.textContent = formatDate(task.start);
+  }
+  if (task.task_type == "TT_Mile") {
+    finished.style.backgroundColor = "#eee";
+    finished.textContent = "";
+  } else {
+    finished.style.backgroundColor = "#fff";
+    finished.textContent = formatDate(task.finish);
+  }
+  if (task.expect_end_date) {
+    expectedFinish.textContent = formatDate(task.expect_end_date);
+  } else {
+    expectedFinish.textContent = "";
+  }
+  percentComplete.textContent = formatPercent(task.percent);
 }
 
 function updateRsrcTab(task) {

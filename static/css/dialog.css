@@ -69,6 +69,7 @@ dialog {
 
 .tab-pane.active {
   display: flex; /* Show the active tab pane */
+  flex-wrap: wrap;
   align-items: start;
 }
 

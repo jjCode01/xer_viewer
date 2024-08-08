@@ -125,7 +125,7 @@ const calcPercent = (task) => {
     CP_Units:
       1 -
       (task.act_work_qty + task.act_equip_qty) /
-        (task.target_work_qty = task.target_equip_qty),
+        (task.target_work_qty + task.target_equip_qty),
   };
   return pt[task.complete_pct_type];
 };

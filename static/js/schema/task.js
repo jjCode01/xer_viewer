@@ -31,16 +31,40 @@ const CONSTRAINTTYPES = {
   CS_MSOB: "Start On or Before",
 };
 
+class TaskStatus {
+  /** @param {string} status_code */
+  constructor(status_code) {
+    /** @type {string} */
+    this.status_code = status_code;
+    /** @type {string} */
+    this.status = STATUSTYPES[this.status_code];
+  }
+  /** @type {boolean} */
+  get notStarted() {
+    return this.status_code === "TK_NotStart";
+  }
+  /** @type {boolean} */
+  get inProgress() {
+    return this.status_code === "TK_Active";
+  }
+  /** @type {boolean} */
+  get completed() {
+    return this.status_code === "TK_Complete";
+  }
+}
+
+/** A class to represent a schedule activity */
 export default class Task {
   constructor(obj) {
     Object.assign(this, obj);
-    this.notStarted = this.status_code === "TK_NotStart";
-    this.inProgress = this.status_code === "TK_Active";
-    this.completed = this.status_code === "TK_Complete";
+    /** @type {boolean} */
     this.longestPath = this.driving_path_flag === "Y";
+    /** @type {boolean} */
     this.isMilestone = this.task_type.endsWith("Mile");
+    /** @type {boolean} */
     this.isLOE = this.task_type === "TT_LOE";
-    this.status = STATUSTYPES[this.status_code];
+    /** @type {TaskStatus} */
+    this.status = new TaskStatus(this.status_code);
     this.origDur = parseInt(this.target_drtn_hr_cnt / 8);
     this.remDur = parseInt(this.remain_drtn_hr_cnt / 8);
     this.totalFloat = this.completed
@@ -54,17 +78,21 @@ export default class Task {
     this.successors = [];
     this.memos = [];
     this.codes = [];
-    this.start = this.notStarted ? this.early_start_date : this.act_start_date;
-    this.finish = this.completed ? this.act_end_date : this.early_end_date;
+    this.start = this.status.notStarted
+      ? this.early_start_date
+      : this.act_start_date;
+    this.finish = this.status.completed
+      ? this.act_end_date
+      : this.early_end_date;
     this.percentType = PERCENTTYPES[this.complete_pct_type];
     this.thisType = TASKTYPES[this.task_type];
     this.primeConstraint = CONSTRAINTTYPES[this.cstr_type];
     this.secondConstraint = CONSTRAINTTYPES[this.cstr_type2];
     this.percent = calcPercent(this);
     this.search = `${this.task_code} ${this.task_name}`;
-    this.project = undefined;
-    this.calendar = undefined;
-    this.wbs = undefined;
+    this.project;
+    this.calendar;
+    this.wbs;
   }
   get budgetCost() {
     return this.resources.reduce((a, r) => a + r.target_cost, 0.0);
@@ -76,11 +104,11 @@ export default class Task {
     );
   }
   actualDuration() {
-    if (this.notStarted || this.isMilestone) return 0;
+    if (this.status.notStarted || this.isMilestone) return 0;
 
     let actDur = 0;
 
-    if (this.inProgress) {
+    if (this.status.inProgress) {
       const dataDate = new Date(this.project.last_recalc_date);
       const lastDate = dataDate.setDate(dataDate.getDate() - 1);
       actDur = this.calendar.calcWorkDays(this.start, lastDate);

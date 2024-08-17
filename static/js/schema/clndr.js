@@ -62,6 +62,11 @@ const parseHolidays = ({ clndr_data }) =>
     return day;
   }, {});
 
+/**
+ * Parse workday exceptions from calandar data
+ * @param {String} param0
+ * @returns
+ */
 const parseExceptions = ({ clndr_data }) =>
   reMatchArr(clndr_data, REEXCEPT).reduce((day, exc) => {
     const dt = xlsToJSDate(exc.slice(0, 5));
@@ -69,6 +74,11 @@ const parseExceptions = ({ clndr_data }) =>
     return day;
   }, {});
 
+/**
+ * Convert an Excel date to a `Date` object.
+ * @param {Number} date Excel date
+ * @returns {Date}
+ */
 const xlsToJSDate = (date) => {
   const tempDate = new Date((date - 25568) * 86400 * 1000);
   return new Date(

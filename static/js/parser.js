@@ -197,7 +197,7 @@ function processTaskPreds(tables) {
 function processActivityCodes(tables) {
   for (const code of Object.values(tables.ACTVCODE ?? {})) {
     code.actvType = tables.ACTVTYPE[code.actv_code_type_id];
-    code.actvType.codes.push(code);
+    code.actvType.addCode(code);
   }
 
   for (const taskCode of tables.TASKACTV ?? []) {
